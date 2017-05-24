@@ -7,12 +7,18 @@ ModelImporter:
   fileIDToRecycleName:
     100000: default
     100002: //RootNode
+    100004: Dron
     400000: default
     400002: //RootNode
+    400004: Dron
     2300000: default
+    2300002: Dron
     3300000: default
+    3300002: Dron
     4300000: default
+    4300002: Dron
     6400000: default
+    6400002: Dron
   materials:
     importMaterials: 0
     materialName: 0

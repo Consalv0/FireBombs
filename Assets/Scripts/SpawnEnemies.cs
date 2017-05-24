@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour {
 	public int Quantity;
 	public float SecondsBetween;
+	public GameObject Target;
 	public GameObject Enemy;
 	public float SpawnPositionZ;
 	public float SpawnRangeX;
@@ -24,6 +25,8 @@ public class SpawnEnemies : MonoBehaviour {
 
 	void newEnemy() {
 		float RangeX = Random.Range(-SpawnRangeX, SpawnRangeX);
-		Instantiate(Enemy, new Vector3(RangeX, 0, SpawnPositionZ), Quaternion.identity);
+		var enemy = Instantiate(Enemy, new Vector3(RangeX, 0, SpawnPositionZ), Quaternion.identity);
+		if (enemy.GetComponent<Gravity>() != null)
+			enemy.GetComponent<Gravity>().Target = Target.transform;
 	}
 }

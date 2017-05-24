@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NewBomb : MonoBehaviour {
 	public float Distance;
-	public GameObject Spaceship;
 	public GameObject Bomb;
 	public float minLife;
 	public float maxLife;
@@ -31,7 +30,7 @@ public class NewBomb : MonoBehaviour {
 	}
 
 	void newBomb(Vector3 velocity, float lifeSpawn) {
-		bomb = Instantiate(Bomb, Spaceship.transform.position, Quaternion.identity);
+		bomb = Instantiate(Bomb, transform.position, Quaternion.identity);
 		bomb.GetComponentInChildren<Bomb>().LifeSpawn = lifeSpawn;
 		bomb.GetComponent<Rigidbody>().velocity = velocity;
 		bomb.GetComponent<Rigidbody>().AddTorque(new Vector3(10, 10, 0));
