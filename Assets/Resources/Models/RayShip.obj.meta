@@ -7,12 +7,24 @@ ModelImporter:
   fileIDToRecycleName:
     100000: default
     100002: //RootNode
+    100004: Ray_Repaired
+    100006: RayShip
     400000: default
     400002: //RootNode
+    400004: Ray_Repaired
+    400006: RayShip
     2300000: default
+    2300002: Ray_Repaired
+    2300004: RayShip
     3300000: default
+    3300002: Ray_Repaired
+    3300004: RayShip
     4300000: default
+    4300002: Ray_Repaired
+    4300004: RayShip
     6400000: default
+    6400002: Ray_Repaired
+    6400004: RayShip
   materials:
     importMaterials: 0
     materialName: 0
