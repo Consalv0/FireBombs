@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBomb : MonoBehaviour {
-	public float Distance;
-	public GameObject Bomb;
+public class SpawnBomb : MonoBehaviour {
+	public Transform startPosition;
+	public GameObject bombPrefab;
+	public float distance;
 	public float minLife;
 	public float maxLife;
 
@@ -18,20 +19,20 @@ public class NewBomb : MonoBehaviour {
 			x = (Input.mousePosition.x / Screen.width) * 2;
 			z = Input.mousePosition.y / Screen.height;
 			y = z * 10;
-			x = (x - 1) * Distance;
-			z = z * Distance;
+			x = (x - 1) * distance;
+			z = z * distance;
 		}
 
 		if (Input.GetButtonUp("Fire1")) { //&& bomb == null) {
 			lifeSpawn = lifeSpawn <= minLife ? minLife : lifeSpawn >= maxLife ? maxLife : lifeSpawn;
-			newBomb(new Vector3(x, y, z), lifeSpawn);
+			NewBomb(new Vector3(x, y, z), lifeSpawn);
 			lifeSpawn = 0;
 		}
 	}
 
-	void newBomb(Vector3 velocity, float lifeSpawn) {
-		bomb = Instantiate(Bomb, transform.position, Quaternion.identity);
-		bomb.GetComponentInChildren<Bomb>().LifeSpawn = lifeSpawn;
+	public void NewBomb(Vector3 velocity, float lifeSpawn) {
+		bomb = Instantiate(bombPrefab, transform.position, Quaternion.identity);
+		bomb.GetComponentInChildren<Bomb>().lifeSpawn = lifeSpawn;
 		bomb.GetComponent<Rigidbody>().velocity = velocity;
 		bomb.GetComponent<Rigidbody>().AddTorque(new Vector3(10, 10, 0));
 	}

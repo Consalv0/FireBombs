@@ -4,44 +4,43 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ControllerMovement : MonoBehaviour {
-	public float MovementSpeed = 10f;
-	public float SprintMultiplier = 1.6f;
-	public float Sensitivity = 5f;
-	public float Smoothing = 2f;
+	public Transform cameraTransform = null;
+	public float speed = 10f;
+	public float sprintMultiplier = 1.6f;
 
-	Vector2 deltaMovement;
-	Vector2 smoothV;
-	float sprint;
-	float x = 0;
-	float z = 0;
+	public float rotationSmoothTime = 0.18f;
+	float rotationSmoothVelocity;
+	public float speedSmoothTime = 0.18f;
+	float speedSmoothVelocity;
+  [SerializeField]
+	float curretSpeed;
+
+	bool sprinting;
+	float targetSpeed;
+  [SerializeField]
+	Vector2 input;
+  [SerializeField]
+	Vector2 inputDir;
 
 	void Start () {
-		sprint = SprintMultiplier;
 		Cursor.lockState = CursorLockMode.Locked;
+		if (cameraTransform == null)
+			cameraTransform = Camera.main.transform;
 	}
 
-	void LateUpdate () {
-		// Translation
-		if (Input.GetButtonDown("Sprint")) {
-			if (sprint != 1)
-				sprint = 1;
-			else
-				sprint = SprintMultiplier;
+	void Update () {
+		input = new Vector2(Input.GetAxisRaw("Left Horizontal"), Input.GetAxisRaw("Left Vertical"));
+		inputDir = input.normalized;
+		if (inputDir != Vector2.zero) {
+			float targetRotationY = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+			float targetRotationX = cameraTransform.eulerAngles.x;
+			transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotationY, ref rotationSmoothVelocity, rotationSmoothTime)
+			 											+ Vector3.right * targetRotationX;
 		}
 
-		x = Input.GetAxis("Left Horizontal") * Time.deltaTime * MovementSpeed * SprintMultiplier / sprint;
-		z = Input.GetAxis("Left Vertical") * Time.deltaTime * MovementSpeed * SprintMultiplier / sprint;
-
-		// Rotation
-		var mouseDirection = new Vector2(Input.GetAxis("Right Horizontal"), Input.GetAxis("Right Vertical"));
-
-		mouseDirection = Vector2.Scale(mouseDirection, new Vector2(Sensitivity * Smoothing, Sensitivity * Smoothing));
-		smoothV.x = Mathf.Lerp(smoothV.x, mouseDirection.x, 1 / Smoothing);
-		smoothV.y = Mathf.Lerp(smoothV.y, mouseDirection.y, 1 / Smoothing);
-		deltaMovement += smoothV;
-
-		// Assign Values
-    transform.Translate(x, 0, z);
-		transform.rotation = Quaternion.Euler(-deltaMovement.y, deltaMovement.x, 0);
+		sprinting = (Input.GetButton("Sprint"));
+		targetSpeed = ((sprinting) ? speed * sprintMultiplier : speed) * inputDir.magnitude;
+		curretSpeed = Mathf.SmoothDamp(curretSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothTime);
+		transform.Translate(transform.forward * curretSpeed * Time.deltaTime, Space.World);
 	}
 }
