@@ -5,7 +5,11 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour {
 	public Transform target;
 	public Vector2 rotationSpeed = new Vector2(10, 5);
+	public float zoomSpeed = 10;
+
+	[Range(6f, 80f)]
   public float maxDistance = 20;
+	[Range(1f, 6f)]
   public float minDistance = 5;
   public float pitchMax = 85;
   public float pitchMin = -40;
@@ -30,6 +34,9 @@ public class ThirdPersonCamera : MonoBehaviour {
 		} else {
 			distFromTarget = maxDistance;
 		}
+		maxDistance += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+		maxDistance = Mathf.Clamp(maxDistance, 6, 80);
+
 		yaw += Input.GetAxis("Right Horizontal") * rotationSpeed.x;
 		pitch -= Input.GetAxis("Right Vertical") * rotationSpeed.y;
 		pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
