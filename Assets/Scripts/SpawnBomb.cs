@@ -11,21 +11,20 @@ public class SpawnBomb : MonoBehaviour {
 
 	GameObject bomb = null;
 	float lifeSpawn = 0;
-	float x, y, z;
+	float x, z;
 
 	void LateUpdate() {
 		if (Input.GetButton("Fire1")) { //&& bomb == null) {
 			lifeSpawn++;
 			x = (Input.mousePosition.x / Screen.width) * 2;
 			z = Input.mousePosition.y / Screen.height;
-			y = z * 10;
 			x = (x - 1) * distance;
 			z = z * distance;
 		}
 
 		if (Input.GetButtonUp("Fire1")) { //&& bomb == null) {
 			lifeSpawn = lifeSpawn <= minLife ? minLife : lifeSpawn >= maxLife ? maxLife : lifeSpawn;
-			NewBomb(new Vector3(x, y, z), lifeSpawn);
+			NewBomb(new Vector3(x, 0, z), lifeSpawn);
 			lifeSpawn = 0;
 		}
 	}

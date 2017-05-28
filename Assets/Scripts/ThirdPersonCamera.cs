@@ -11,12 +11,19 @@ public class ThirdPersonCamera : MonoBehaviour {
   public float maxDistance = 20;
 	[Range(1f, 6f)]
   public float minDistance = 5;
+	[Range(-180f, 180f)]
   public float pitchMax = 85;
+	[Range(-180f, 180f)]
   public float pitchMin = -40;
 
-	public float rotationSmoothTime = 0.12f;
-	Vector3 rotationSmoothVelocity;
+	[Range(0f, 0.8f)]
+	public float rotateSmoothTime = 0.12f;
+	Vector3 rotateSmoothVelocity;
 	Vector3 currentRotation;
+	[Range(0f, 0.8f)]
+	public float moveSmoothTime = 0.06f;
+	Vector3 moveSmoothVelocity;
+	Vector3 currentPosition;
 
 	Vector3 vectorToCam;
   float yaw;
@@ -28,22 +35,23 @@ public class ThirdPersonCamera : MonoBehaviour {
   	vectorToCam = transform.position - target.position;
   	RaycastHit hit;
 		Debug.DrawRay(target.position, vectorToCam.normalized * distFromTarget, Color.red);
-  	if (Physics.Raycast(target.position, vectorToCam.normalized, out hit, maxDistance)) {
+  	if (Physics.Raycast(target.position, vectorToCam.normalized, out hit, maxDistance, 1 << LayerMask.NameToLayer("Terrain"))) {
     	distFromTarget = (hit.point - target.position).magnitude;
 			distFromTarget = distFromTarget < minDistance ? minDistance : distFromTarget;
 		} else {
 			distFromTarget = maxDistance;
 		}
 		maxDistance += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-		maxDistance = Mathf.Clamp(maxDistance, 6, 80);
+		maxDistance = Mathf.Clamp(maxDistance, 6, 60);
 
 		yaw += Input.GetAxis("Right Horizontal") * rotationSpeed.x;
 		pitch -= Input.GetAxis("Right Vertical") * rotationSpeed.y;
 		pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
 
-		currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotationSmoothVelocity, rotationSmoothTime);
+		currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotateSmoothVelocity, rotateSmoothTime);
 		transform.eulerAngles = currentRotation;
 
-   	transform.position = target.position - transform.forward * distFromTarget;
+		currentPosition = Vector3.SmoothDamp(currentPosition, target.position - transform.forward * distFromTarget, ref moveSmoothVelocity, moveSmoothTime);
+   	transform.position = currentPosition;
   }
 }
