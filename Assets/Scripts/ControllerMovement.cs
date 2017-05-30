@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 [RequireComponent(typeof(Rigidbody))]
 public class ControllerMovement : MonoBehaviour {
-	public Transform camTransform = null;
+	public Transform camTransform;
 	public float speedFactor = 10f;
 	public float sprintMultiplier = 1.6f;
 
@@ -21,12 +20,12 @@ public class ControllerMovement : MonoBehaviour {
 	float targetSpeed;
 	Vector2 input;
 	Vector2 inputDir;
-  [SerializeField]
+	[SerializeField]
 	float inputSpeed;
 
 
 	#if UNITY_STANDALONE_OSX
-	bool rightTriggerReady = false;
+	bool rightTriggerReady;
 	#endif
 
 	void Start () {
@@ -41,13 +40,17 @@ public class ControllerMovement : MonoBehaviour {
 		if (inputDir != Vector2.zero) {
 			Vector2 targetRotation = new Vector2(camTransform.eulerAngles.x, Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + camTransform.eulerAngles.y);
 			transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation.y, ref rotationSmoothVelocity, rotationSmoothing)
-			 											+ Vector3.right * targetRotation.x;
+														+ Vector3.right * targetRotation.x;
 		}
 
 		sprinting = Input.GetButton("Sprint");
-		#if UNITY_STANDALONE_OSX
-			inputSpeed = MacTrigger("Right", ref rightTriggerReady);
- 		#endif
+		inputSpeed = Input.GetButton("MacRight Trigger") ? 1 : 0;
+	#if UNITY_STANDALONE_WIN
+		// inputSpeed += Input.GetAxisRaw();
+	#endif
+	#if UNITY_STANDALONE_OSX
+		inputSpeed += MacTrigger("Right", ref rightTriggerReady);
+	#endif
 		targetSpeed = ((sprinting) ? speedFactor * sprintMultiplier : speedFactor) * inputSpeed; // inputDir.magnitude;
 		curretSpeed = Mathf.SmoothDamp(curretSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothing);
 		transform.Translate(transform.forward * targetSpeed * Time.deltaTime, Space.World);
@@ -55,12 +58,12 @@ public class ControllerMovement : MonoBehaviour {
 
 	public float MacTrigger(string side, ref bool triggerReady) {
 		float adjustedAxis = 0f;
-    float timeAxis = Input.GetAxisRaw("Mac" + side + " Trigger");
+		float timeAxis = Input.GetAxisRaw("Mac" + side + " Trigger");
 
 		if((timeAxis > -0.9f && timeAxis < -0.0001f) && triggerReady == false)
-      triggerReady = true;
-    if (triggerReady)
-      adjustedAxis = (timeAxis + 1) * 0.5f;
+			triggerReady = true;
+		if (triggerReady)
+			adjustedAxis = (timeAxis + 1) * 0.5f;
 
 		return adjustedAxis;
 	}
