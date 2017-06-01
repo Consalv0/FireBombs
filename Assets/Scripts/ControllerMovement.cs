@@ -44,9 +44,9 @@ public class ControllerMovement : MonoBehaviour {
 		}
 
 		sprinting = Input.GetButton("Sprint");
-		inputSpeed = Input.GetButton("MacRight Trigger") ? 1 : 0;
+		inputSpeed = Input.GetButton("Right Trigger") ? 1 : 0;
 	#if UNITY_STANDALONE_WIN
-		// inputSpeed += Input.GetAxisRaw();
+		inputSpeed += Input.GetAxisRaw("Right Trigger");
 	#endif
 	#if UNITY_STANDALONE_OSX
 		inputSpeed += MacTrigger("Right", ref rightTriggerReady);
