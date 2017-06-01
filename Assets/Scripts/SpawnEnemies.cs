@@ -25,7 +25,7 @@ public class SpawnEnemies : MonoBehaviour {
 	public void NewEnemy() {
 		float RangeX = Random.Range(-spawnRangeX, spawnRangeX);
 		var enemy = Instantiate(enemyPrefab, new Vector3(RangeX, 0, spawnPositionZ), Quaternion.identity);
-		if (enemy.GetComponent<Gravity>() != null)
+		if (enemy.GetComponent<Gravity>() != null && target != null)
 			enemy.GetComponent<Gravity>().target = target.transform;
 	}
 }

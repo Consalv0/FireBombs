@@ -1,32 +1,28 @@
 fileFormatVersion: 2
-guid: 3c37d56b6f3a94b93904dbd82c8afe36
-timeCreated: 1495421680
+guid: 1610c7b539bc04d739b8dfaddcc2de1e
+timeCreated: 1496282593
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: default
-    100002: //RootNode
-    100004: Ray_Repaired
+    100000: Camera
+    100002: Lamp
+    100004: //RootNode
     100006: RayShip
-    400000: default
-    400002: //RootNode
-    400004: Ray_Repaired
+    100008: Sun
+    400000: Camera
+    400002: Lamp
+    400004: //RootNode
     400006: RayShip
-    2300000: default
-    2300002: Ray_Repaired
-    2300004: RayShip
-    3300000: default
-    3300002: Ray_Repaired
-    3300004: RayShip
-    4300000: default
-    4300002: Ray_Repaired
-    4300004: RayShip
-    6400000: default
-    6400002: Ray_Repaired
-    6400004: RayShip
+    400008: Sun
+    2300000: RayShip
+    2300002: //RootNode
+    3300000: RayShip
+    3300002: //RootNode
+    4300000: RayShip
+    6400000: //RootNode
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
@@ -52,15 +48,15 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
-    addColliders: 1
+    meshCompression: 2
+    addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 0
+    weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -69,8 +65,8 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
-  importAnimation: 0
+    tangentImportMode: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
