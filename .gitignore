@@ -35,5 +35,5 @@ sysinfo.txt
 
 # Blender BackUps
 
-*.blender1
-*.blender1.meta
+*.blend1
+*.blend1.meta
