@@ -34,6 +34,5 @@ sysinfo.txt
 *.unitypackage
 
 # Blender BackUps
-
 *.blend1
 *.blend1.meta
