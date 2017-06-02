@@ -9,7 +9,7 @@ public class ControllerMovement : MonoBehaviour {
 
 	[Range(0.05f, 0.5f)]
 	public float rotationSmoothing = 0.18f;
-	float rotationSmoothVelocity;
+	Vector2 rotationSmoothVelocity;
 	[Range(0.05f, 3.5f)]
 	public float speedSmoothing = 1.5f;
 	float speedSmoothVelocity;
@@ -22,7 +22,8 @@ public class ControllerMovement : MonoBehaviour {
 	Vector2 inputDir;
 	[SerializeField]
 	float inputSpeed;
-
+	[SerializeField]
+	Vector2 targetRotation;
 
 	#if UNITY_STANDALONE_OSX
 	bool rightTriggerReady;
@@ -38,9 +39,9 @@ public class ControllerMovement : MonoBehaviour {
 		input = new Vector2(Input.GetAxisRaw("Left Horizontal"), Input.GetAxisRaw("Left Vertical"));
 		inputDir = input.normalized;
 		if (inputDir != Vector2.zero) {
-			Vector2 targetRotation = new Vector2(camTransform.eulerAngles.x, Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + camTransform.eulerAngles.y);
-			transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation.y, ref rotationSmoothVelocity, rotationSmoothing)
-														+ Vector3.right * targetRotation.x;
+			targetRotation = new Vector2(camTransform.eulerAngles.x, camTransform.eulerAngles.y);
+			transform.eulerAngles = Vector3.right * Mathf.SmoothDampAngle(transform.eulerAngles.x, targetRotation.x, ref rotationSmoothVelocity.x, rotationSmoothing)
+														+ Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation.y, ref rotationSmoothVelocity.y, rotationSmoothing);
 		}
 
 		sprinting = Input.GetButton("Sprint");
