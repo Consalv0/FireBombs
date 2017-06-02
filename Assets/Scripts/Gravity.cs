@@ -12,6 +12,7 @@ public class Gravity : MonoBehaviour {
 	}
 
 	void Update() {
-		transform.GetComponent<Rigidbody>().AddExplosionForce(-mass, target.position, radius);
+		if (target != null)
+			transform.GetComponent<Rigidbody>().AddExplosionForce(-mass, target.position, radius);
 	}
 }
