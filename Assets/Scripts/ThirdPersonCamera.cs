@@ -32,31 +32,33 @@ public class ThirdPersonCamera : MonoBehaviour {
 	float distFromTarget;
 
 	void LateUpdate() {
-		vectorToCam = transform.position - target.position;
-		RaycastHit hit;
-		Debug.DrawRay(target.position, vectorToCam.normalized * distFromTarget, Color.red);
-		if (Physics.Raycast(target.position, vectorToCam.normalized, out hit, maxDistance, 1 << LayerMask.NameToLayer("Terrain"))) {
-			distFromTarget = (hit.point - target.position).magnitude;
-			distFromTarget = distFromTarget < minDistance ? minDistance : distFromTarget;
-		} else {
-			distFromTarget = maxDistance;
+		if (target) {
+			vectorToCam = transform.position - target.position;
+			RaycastHit hit;
+			Debug.DrawRay(target.position, vectorToCam.normalized * distFromTarget, Color.red);
+			if (Physics.Raycast(target.position, vectorToCam.normalized, out hit, maxDistance, 1 << LayerMask.NameToLayer("Terrain"))) {
+				distFromTarget = (hit.point - target.position).magnitude;
+				distFromTarget = distFromTarget < minDistance ? minDistance : distFromTarget;
+			} else {
+				distFromTarget = maxDistance;
+			}
+			maxDistance += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+			maxDistance = Mathf.Clamp(maxDistance, 6, 40f);
+		#if UNITY_STANDALONE_WIN
+			yaw += (Input.GetAxis("Right Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
+			pitch -= (Input.GetAxis("Right Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
+		#endif
+		#if UNITY_STANDALONE_OSX
+			yaw += (Input.GetAxis("MacRight Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
+			pitch -= (Input.GetAxis("MacRight Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
+		#endif
+			pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
+
+			currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotateSmoothVelocity, rotateSmoothTime);
+			transform.eulerAngles = currentRotation;
+
+			currentPosition = Vector3.SmoothDamp(currentPosition, target.position - transform.forward * distFromTarget, ref moveSmoothVelocity, moveSmoothTime);
+			transform.position = currentPosition;
 		}
-		maxDistance += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-		maxDistance = Mathf.Clamp(maxDistance, 6, 40f);
-	#if UNITY_STANDALONE_WIN
-		yaw += (Input.GetAxis("Right Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
-		pitch -= (Input.GetAxis("Right Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
-	#endif
-	#if UNITY_STANDALONE_OSX
-		yaw += (Input.GetAxis("MacRight Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
-		pitch -= (Input.GetAxis("MacRight Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
-	#endif
-		pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
-
-		currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotateSmoothVelocity, rotateSmoothTime);
-		transform.eulerAngles = currentRotation;
-
-		currentPosition = Vector3.SmoothDamp(currentPosition, target.position - transform.forward * distFromTarget, ref moveSmoothVelocity, moveSmoothTime);
-   	transform.position = currentPosition;
   }
 }

@@ -6,13 +6,122 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Armature
+    100004: Bone
+    100006: Bone_001
+    100008: Bone_002
+    100010: Bone_003
+    100012: Bone_005
+    100014: Bone_006
+    100016: Bone_007
+    100018: Bone_008
+    100020: Bone_009
+    100022: Bone_010
+    100024: Bone_012
+    100026: Bone_013
+    100028: Bone_014
+    100030: Bone_015
+    100032: Bone_016
+    100034: RayShip
+    100036: Bone_011
+    100038: Bone_017
+    100040: Bone_018
+    100042: Bone_019
+    100044: Bone_020
+    100046: Bone_021
+    100048: Bone_022
+    100050: Pelvis
+    100052: Pelvis_001
+    100054: BackSpine_Bot
+    100056: BackSpine_Bot_001
+    100058: Head_L
+    100060: Head_R
+    100062: Left
+    100064: LeftWing_R
+    100066: LeftWing_R_001
+    100068: LeftWing_R_002
+    100070: LeftWing_R_003
+    100072: LeftWing_R_004
+    100074: Right
+    100076: Skeleton
+    100078: Spine_Top
+    100080: Tail
+    100082: Tail_001
+    100084: Tail_002
+    100086: Tail_003
+    100088: Wing_L
+    100090: Wing_L_001
+    100092: Wing_L_002
+    100094: Wing_L_003
+    100096: Wing_L_004
+    100098: Wing_R
+    100100: Wing_R_001
+    100102: Wing_R_002
+    100104: Wing_R_003
+    100106: Wing_R_004
     400000: //RootNode
+    400002: Armature
+    400004: Bone
+    400006: Bone_001
+    400008: Bone_002
+    400010: Bone_003
+    400012: Bone_005
+    400014: Bone_006
+    400016: Bone_007
+    400018: Bone_008
+    400020: Bone_009
+    400022: Bone_010
+    400024: Bone_012
+    400026: Bone_013
+    400028: Bone_014
+    400030: Bone_015
+    400032: Bone_016
+    400034: RayShip
+    400036: Bone_011
+    400038: Bone_017
+    400040: Bone_018
+    400042: Bone_019
+    400044: Bone_020
+    400046: Bone_021
+    400048: Bone_022
+    400050: Pelvis
+    400052: Pelvis_001
+    400054: BackSpine_Bot
+    400056: BackSpine_Bot_001
+    400058: Head_L
+    400060: Head_R
+    400062: Left
+    400064: LeftWing_R
+    400066: LeftWing_R_001
+    400068: LeftWing_R_002
+    400070: LeftWing_R_003
+    400072: LeftWing_R_004
+    400074: Right
+    400076: Skeleton
+    400078: Spine_Top
+    400080: Tail
+    400082: Tail_001
+    400084: Tail_002
+    400086: Tail_003
+    400088: Wing_L
+    400090: Wing_L_001
+    400092: Wing_L_002
+    400094: Wing_L_003
+    400096: Wing_L_004
+    400098: Wing_R
+    400100: Wing_R_001
+    400102: Wing_R_002
+    400104: Wing_R_003
+    400106: Wing_R_004
     2300000: //RootNode
+    2300002: RayShip
     3300000: //RootNode
+    3300002: RayShip
     4300000: RayShip
     6400000: //RootNode
     7400000: Default Take
     9500000: //RootNode
+    13700000: RayShip
   materials:
     importMaterials: 1
     materialName: 1
@@ -71,13 +180,13 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Armature
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
