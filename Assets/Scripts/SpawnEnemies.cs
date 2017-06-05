@@ -24,6 +24,7 @@ public class SpawnEnemies : MonoBehaviour {
 
 	public void NewEnemy() {
 		float RangeX = Random.Range(-spawnRangeX, spawnRangeX);
+		// TODO Optimize Intantiations
 		var enemy = Instantiate(enemyPrefab, new Vector3(RangeX, 0, spawnPositionZ), Quaternion.identity);
 		if (enemy.GetComponent<Gravity>() != null)
 			enemy.GetComponent<Gravity>().target = target == null ? null : target.transform;

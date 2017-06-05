@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO add to Entity Script
 public class LifeTime : MonoBehaviour {
 	public float lifeTime = 300;
 	Material material;

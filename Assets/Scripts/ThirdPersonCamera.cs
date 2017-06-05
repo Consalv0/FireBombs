@@ -31,7 +31,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 	[SerializeField]
 	float distFromTarget;
 
-	void LateUpdate() {
+	void FixedUpdate() {
 		if (target) {
 			vectorToCam = transform.position - target.position;
 			RaycastHit hit;

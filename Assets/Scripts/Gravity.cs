@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Gravity : MonoBehaviour {
+	Rigidbody rigBody;
+
 	public Transform target;
-	public float radius;
-	public float mass;
+	public float radius = 1000;
+	public float mass = 10;
 
 	void Start() {
+		rigBody = GetComponent<Rigidbody>();
+
 		mass = mass < 0 ? -mass : mass;
 	}
 
 	void Update() {
 		if (target != null)
-			transform.GetComponent<Rigidbody>().AddExplosionForce(-mass, target.position, radius);
+			rigBody.AddExplosionForce(-mass, target.position, radius);
 	}
 }

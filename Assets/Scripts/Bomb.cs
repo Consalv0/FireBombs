@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
+// TODO add to Entity.cs
 public class Bomb : MonoBehaviour {
 	public float lifeSpawn;
 
