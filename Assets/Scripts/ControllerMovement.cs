@@ -7,19 +7,22 @@ public class ControllerMovement : MonoBehaviour {
 	Rigidbody rigBody;
 
 	public Transform camTransform;
-	public float maxSpeed = 10f;
-	public float sprintMultiplier = 1.6f;
-	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, 0.3f);
-	Vector3 rotationSmoothVelocity;
+
 	[Range(0.05f, 3.5f)]
 	public float speedSmoothing = 1.5f;
-
-	float speedSmoothVelocity;
+	public float maxSpeed = 10f;
 	[SerializeField]
-	float curretSpeed;
+	float curretVelocity;
+	float targetVelocity;
+	float speedSmoothVelocity;
 
+	[Range(0.05f,1)]
+	public float stabilizeSmoothing = 0.3f;
+	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, 0.3f);
+	Vector3 rotationSmoothVelocity;
+
+	public float sprintMultiplier = 1.6f;
 	bool sprinting;
-	float targetSpeed;
 	Vector2 input;
 	Vector2 inputDir;
 	float inputSpeed;
@@ -36,7 +39,6 @@ public class ControllerMovement : MonoBehaviour {
 		if (camTransform == null)
 			camTransform = Camera.main.transform;
 	}
-
 	void Update() {
 		sprinting = Input.GetButton("Sprint");
 		inputSpeed = Input.GetButton("Right Trigger") ? 1 : 0;
@@ -49,16 +51,13 @@ public class ControllerMovement : MonoBehaviour {
 		input = new Vector2(Input.GetAxisRaw("Left Horizontal"), Input.GetAxisRaw("Left Vertical"));
 		inputDir = input.normalized;
 		if (inputDir != Vector2.zero || inputSpeed > 0) {
-			targetRotation = new Vector3(0, Mathf.Asin(input.x) * Mathf.Rad2Deg, input.x * -20);
-			rigBody.AddTorque(targetRotation);
-			targetRotation = new Vector3(Mathf.Asin(input.y) * Mathf.Rad2Deg, 0, 0);
-			rigBody.AddRelativeTorque(targetRotation);
+			targetRotation = new Vector3(Mathf.Asin(input.y) * Mathf.Rad2Deg * rotationSmoothing.x, Mathf.Asin(input.x) * Mathf.Rad2Deg * rotationSmoothing.y, input.x * -20 * rotationSmoothing.z);
+			rigBody.AddTorque(new Vector3(0, targetRotation.y, targetRotation.z));
+			rigBody.AddRelativeTorque(new Vector3(targetRotation.x, 0, 0));
 
 			/* << Code Copied from http://answers.unity3d.com/questions/10425 >> */
-			Vector3 predictedUp = Quaternion.AngleAxis(
-					rigBody.angularVelocity.magnitude * Mathf.Rad2Deg * 0.3f / 1.5f,
-					rigBody.angularVelocity
-			) * transform.up;
+			Vector3 predictedUp = Quaternion.AngleAxis(rigBody.angularVelocity.magnitude * Mathf.Rad2Deg * stabilizeSmoothing / 1.5f,
+			                                           rigBody.angularVelocity) * transform.up;
 			Vector3 torqueVector = Vector3.Cross(predictedUp, Vector3.up);
 			rigBody.AddTorque(torqueVector * 1.5f * 1.5f);
 			/* /<< >>/ */
@@ -73,9 +72,9 @@ public class ControllerMovement : MonoBehaviour {
 		}
 
 		if (inputSpeed > 0) {
-			targetSpeed = ((sprinting) ? maxSpeed * sprintMultiplier : maxSpeed) * inputSpeed; // inputDir.magnitude;
-			curretSpeed = Mathf.SmoothDamp(curretSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothing);
-			rigBody.velocity = transform.forward * curretSpeed;
+			targetVelocity = ((sprinting) ? maxSpeed * sprintMultiplier : maxSpeed) * inputSpeed;
+			curretVelocity = Mathf.SmoothDamp(curretVelocity, targetVelocity, ref speedSmoothVelocity, speedSmoothing);
+			rigBody.velocity = transform.forward * curretVelocity;
 		}
 
 		//// Kinematic Movement ////
