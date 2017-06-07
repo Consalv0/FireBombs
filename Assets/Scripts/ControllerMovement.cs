@@ -18,7 +18,7 @@ public class ControllerMovement : MonoBehaviour {
 
 	[Range(0.05f,1)]
 	public float stabilizeSmoothing = 0.3f;
-	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, 0.3f);
+	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, -20f);
 	Vector3 rotationSmoothVelocity;
 
 	public float sprintMultiplier = 1.6f;
@@ -51,7 +51,7 @@ public class ControllerMovement : MonoBehaviour {
 		input = new Vector2(Input.GetAxisRaw("Left Horizontal"), Input.GetAxisRaw("Left Vertical"));
 		inputDir = input.normalized;
 		if (inputDir != Vector2.zero || inputSpeed > 0) {
-			targetRotation = new Vector3(Mathf.Asin(input.y) * Mathf.Rad2Deg * rotationSmoothing.x, Mathf.Asin(input.x) * Mathf.Rad2Deg * rotationSmoothing.y, input.x * -20 * rotationSmoothing.z);
+			targetRotation = new Vector3(Mathf.Asin(input.y) * Mathf.Rad2Deg * rotationSmoothing.x, Mathf.Asin(input.x) * Mathf.Rad2Deg * rotationSmoothing.y, input.x * rotationSmoothing.z);
 			rigBody.AddTorque(new Vector3(0, targetRotation.y, targetRotation.z));
 			rigBody.AddRelativeTorque(new Vector3(targetRotation.x, 0, 0));
 
