@@ -79,6 +79,8 @@ public class ControllerMovement : MonoBehaviour {
 			targetVelocity = ((sprinting) ? maxSpeed * sprintMultiplier : maxSpeed) * inputSpeed;
 			curretVelocity = Mathf.SmoothDamp(curretVelocity, targetVelocity, ref speedSmoothVelocity, speedSmoothing);
 			rigBody.velocity = transform.forward * curretVelocity;
+		} else {
+			curretVelocity = rigBody.velocity.magnitude;
 		}
 
 		//// Kinematic Movement ////

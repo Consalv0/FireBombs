@@ -40,7 +40,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 	void FixedUpdate() {
 		/* If there's a target, you can move the camera */
 		if (target) {
-			/* Measure the distance between the target and the camera, then cas a Ray and if theres collision measure 
+			/* Measure the distance between the target and the camera, then cas a Ray and if there's collision measure 
 			 * the distance and modify the current distance acordly to the MaxMin limits, otherwise only take the distance and clamp them*/
 
 			vectorToCam = transform.position - target.position;
