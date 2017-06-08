@@ -1,0 +1,150 @@
+fileFormatVersion: 2
+guid: 6e4472d3371684d4f84e01569abbc6a4
+timeCreated: 1496874968
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Armature
+    100004: BackLeg_L
+    100006: BackLeg_L_001
+    100008: BackLeg_L_002
+    100010: BackLeg_L_003
+    100012: Chelae_L
+    100014: Chelae_L_001
+    100016: Chelae_L_002
+    100018: Chelae_L_003
+    100020: Crab
+    100022: Exoskeleton
+    100024: Eye_001_L
+    100026: Eye_R
+    100028: FirstLeg_L
+    100030: FirstLeg_L_001
+    100032: FirstLeg_L_002
+    100034: FirstLeg_L_003
+    100036: MiddleLeg_L
+    100038: MiddleLeg_L_001
+    100040: MiddleLeg_L_002
+    100042: MiddleLeg_L_003
+    100044: BackLeg_R
+    100046: BackLeg_R_001
+    100048: Chelae_R
+    100050: Claw_L
+    100052: Claw_R
+    100054: FirstLeg_R
+    100056: FirstLeg_R_001
+    100058: MiddleLeg_R
+    100060: MiddleLeg_R_001
+    100062: Eye_L
+    400000: //RootNode
+    400002: Armature
+    400004: BackLeg_L
+    400006: BackLeg_L_001
+    400008: BackLeg_L_002
+    400010: BackLeg_L_003
+    400012: Chelae_L
+    400014: Chelae_L_001
+    400016: Chelae_L_002
+    400018: Chelae_L_003
+    400020: Crab
+    400022: Exoskeleton
+    400024: Eye_001_L
+    400026: Eye_R
+    400028: FirstLeg_L
+    400030: FirstLeg_L_001
+    400032: FirstLeg_L_002
+    400034: FirstLeg_L_003
+    400036: MiddleLeg_L
+    400038: MiddleLeg_L_001
+    400040: MiddleLeg_L_002
+    400042: MiddleLeg_L_003
+    400044: BackLeg_R
+    400046: BackLeg_R_001
+    400048: Chelae_R
+    400050: Claw_L
+    400052: Claw_R
+    400054: FirstLeg_R
+    400056: FirstLeg_R_001
+    400058: MiddleLeg_R
+    400060: MiddleLeg_R_001
+    400062: Eye_L
+    2300000: //RootNode
+    2300002: Crab
+    3300000: //RootNode
+    3300002: Crab
+    4300000: Cylinder
+    4300002: Crab
+    7400000: Default Take
+    9500000: //RootNode
+    13700000: Crab
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: Armature
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

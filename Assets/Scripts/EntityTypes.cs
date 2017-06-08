@@ -3,5 +3,6 @@
   GeneralEnemy,
   MantaRay,
   Bomb,
-	ElectricBomb
+	ElectricBomb, 
+	Crab
 };
