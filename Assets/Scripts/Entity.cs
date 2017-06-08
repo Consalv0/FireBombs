@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour {
 	public int level = 1;
   public Material material;
 
+	/* This script only will decide wich type of entity is and how it behaves */
   void Start() {
     switch(Type) {
       case EntityType.Shatter:

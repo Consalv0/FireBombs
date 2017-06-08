@@ -11,6 +11,8 @@ public class SpawnBomb : MonoBehaviour {
 	GameObject bomb;
 	float lifeSpawn;
 
+	/* When input is pressed, Instantiate a bombPrefab in the position of the spawner but sligtly behind it also 
+	 * with a force in the opposite direction that's facing */
 	void LateUpdate() {
 		if (Input.GetButton("Fire1")) { //&& bomb == null) {
 			lifeSpawn += 0.1f;

@@ -7,29 +7,37 @@ using UnityEditor;
 
 public class Destroy : MonoBehaviour {
 	[HideInInspector]
-	public bool shatter;
+	public bool shatter; // Is Shatter?
 	[HideInInspector]
-	public GameObject shatterPrefab;
+	public GameObject shatterPrefab; // Prefab of shatters
 	[HideInInspector]
-	public Material piecesMaterial;
+	public Material piecesMaterial; // Material of the shatters
 	[HideInInspector]
-	public int numOfPieces = 2;
+	public int numOfPieces = 2; // Number of shatters
 
-	public float explosionForce = 10;
-	public float timeBeforeExplosion = 7;
-	public float explosionRadius = 100;
+	public float explosionForce = 10; // Force of the explosion
+	public float timeBeforeExplosion = 7; // Time before explosion
+	public float explosionRadius = 100; // Radius of explosion
 	[Range(0, 100)]
-	public float explosionDamage;
+	public float explosionDamage; // Damage of explosion
 
 	void Start() {
+		/* If not given prefab and material, take the default and take the first material of the object */
+
 		shatterPrefab = shatterPrefab ? shatterPrefab : (GameObject)Resources.Load("Prefabs/Shatter", typeof(GameObject));
 		piecesMaterial = piecesMaterial ? piecesMaterial : transform.GetComponentInChildren<Renderer>().materials[0];
 	}
 
 	public void Go(float radius = -1, float force = -1, int pieces = -1) {
+		/* Because you can execute this outside the script I decided to make some custom propeties */
+
   	pieces = pieces < 0 ? numOfPieces : pieces;
 		force = force < 0 ? explosionForce : force;
 		radius = radius < 0 ? explosionRadius : radius;
+
+		/* Make a simultaneous function that will make a count down and flickering switching materials and when the time is over, then make them explode
+		 * and create a sphere, every object that is inside the spehere will take damage and will be pushed away with a axplosion force,
+		 * at the end, only if shatter is active the object will instantiate shatters in a small random position range and pushed away with a explosion force */
 
 		StartCoroutine(FlickBeforeShatter(pieces, force, radius));
 	}
@@ -39,9 +47,9 @@ public class Destroy : MonoBehaviour {
 		while (timeBeforeExplosion > 0) {
 			timeBeforeExplosion -= 0.1f + Mathf.Abs(timeBeforeExplosion / startTime);
 			yield return new WaitForSeconds(timeBeforeExplosion / startTime);
-			GetComponent<Renderer>().material = (Material)Resources.Load("Materials/RedMetallic", typeof(Material));
+			GetComponentInChildren<Renderer>().material = (Material)Resources.Load("Materials/RedMetallic", typeof(Material));
 			yield return new WaitForSeconds(timeBeforeExplosion / startTime * 0.5f);
-			GetComponent<Renderer>().material = piecesMaterial;
+			GetComponentInChildren<Renderer>().material = piecesMaterial;
 		}
 		if (radius > 0) {
 			Collider[] colliders = Physics.OverlapSphere(transform.position, radius/4);
@@ -72,6 +80,7 @@ public class Destroy : MonoBehaviour {
 	}
 }
 
+/* This is because a custom Editor GUI Layout */
 #if UNITY_EDITOR
 [CustomEditor(typeof(Destroy))]
 public class DestroyEditor : Editor {

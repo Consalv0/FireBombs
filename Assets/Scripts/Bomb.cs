@@ -8,10 +8,12 @@ public class Bomb : MonoBehaviour {
 	public float lifeSpawn;
 
 	void Start() {
+		/* Destroy the object with a timer */
 		GetComponentInParent<Destroy>().timeBeforeExplosion = lifeSpawn;
 		GetComponentInParent<Destroy>().Go();
 	}
 
+	/* When a object is touched, explode and do damage to the touched object */
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.GetComponent<Enemy>() != null) {
 			GetComponentInParent<Destroy>().timeBeforeExplosion = 0;

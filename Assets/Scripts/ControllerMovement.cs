@@ -5,41 +5,45 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ControllerMovement : MonoBehaviour {
 	Rigidbody rigBody;
-
-	public Transform camTransform;
+	public Transform camTransform; // The camera transform if not assigned it will be the main camera
 
 	[Range(0.05f, 3.5f)]
-	public float speedSmoothing = 1.5f;
-	public float maxSpeed = 10f;
+	public float speedSmoothing = 1.5f;	// Speed smoothing factor
+	public float maxSpeed = 10f; // Max speed
 	[SerializeField]
 	float curretVelocity;
 	float targetVelocity;
 	float speedSmoothVelocity;
 
 	[Range(0.05f,1)]
-	public float stabilizeSmoothing = 0.3f;
-	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, -20f);
+	public float stabilizeSmoothing = 0.3f; // Stabilize smoothing factor
+	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, -20f); // Vector3 smoothing factor
 	Vector3 rotationSmoothVelocity;
 
-	public float sprintMultiplier = 1.6f;
+	public float sprintMultiplier = 1.6f; // Sprint Miltiplier
 	bool sprinting;
 	Vector2 input;
 	Vector2 inputDir;
 	float inputSpeed;
 	Vector3 targetRotation;
 
-	#if UNITY_STANDALONE_OSX
-	  bool rightTriggerReady;
-	#endif
+#if UNITY_STANDALONE_OSX
+	bool rightTriggerReady;
+#endif
 
-	void Start () {
-		rigBody = GetComponent<Rigidbody>();
-
+	void Start() {
 		Cursor.lockState = CursorLockMode.Locked;
+
+		rigBody = GetComponent<Rigidbody>();
 		if (camTransform == null)
 			camTransform = Camera.main.transform;
 	}
 	void Update() {
+		/* Get the inputs, and make a direction with them, then while there's a direction or the gameObject is moving,
+		 * add torque with the respective rotation, I added a Relative Rotation because of the interaction of the torque in the X axis,
+		 * then added the stabilize function because of the wanted tend of the gameObject to be stand up, at the end we only multiply
+		 * the speed and add the velocity clamped*/
+
 		sprinting = Input.GetButton("Sprint");
 		inputSpeed = Input.GetButton("Right Trigger") ? 1 : 0;
 	#if UNITY_STANDALONE_WIN
