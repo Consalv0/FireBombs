@@ -15,7 +15,7 @@ public class ControllerMovement : MonoBehaviour {
 	float targetVelocity;
 	float speedSmoothVelocity;
 
-	[Range(0.05f,1)]
+	[Range(0.05f, 1)]
 	public float stabilizeSmoothing = 0.3f; // Stabilize smoothing factor
 	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, -20f); // Vector3 smoothing factor
 	Vector3 rotationSmoothVelocity;
@@ -39,7 +39,7 @@ public class ControllerMovement : MonoBehaviour {
 			camTransform = Camera.main.transform;
 	}
 	void Update() {
-		/* Get the inputs, and make a direction with them, then while there's a direction or the gameObject is moving,
+		/* Get the inputs, and make a direction with them, then while there's a direction or the gameObject is moving
 		 * add torque with the respective rotation, I added a Relative Rotation because of the interaction of the torque in the X axis,
 		 * then added the stabilize function because of the wanted tend of the gameObject to be stand up, at the end we only multiply
 		 * the speed and add the velocity clamped*/
@@ -54,7 +54,7 @@ public class ControllerMovement : MonoBehaviour {
 	#endif
 		input = new Vector2(Input.GetAxisRaw("Left Horizontal"), Input.GetAxisRaw("Left Vertical"));
 		inputDir = input.normalized;
-		if (inputDir != Vector2.zero || inputSpeed > 0) {
+		if (inputDir != Vector2.zero || curretVelocity > 0) {
 			targetRotation = new Vector3(Mathf.Asin(input.y) * Mathf.Rad2Deg * rotationSmoothing.x, Mathf.Asin(input.x) * Mathf.Rad2Deg * rotationSmoothing.y, input.x * rotationSmoothing.z);
 			rigBody.AddTorque(new Vector3(0, targetRotation.y, targetRotation.z));
 			rigBody.AddRelativeTorque(new Vector3(targetRotation.x, 0, 0));

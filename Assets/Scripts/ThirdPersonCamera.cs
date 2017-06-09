@@ -60,8 +60,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 		#if UNITY_STANDALONE_WIN
 			yaw += (Input.GetAxis("Right Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
 			pitch -= (Input.GetAxis("Right Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
-		#endif
-		#if UNITY_STANDALONE_OSX
+		#else
 			yaw += (Input.GetAxis("MacRight Horizontal") + Input.GetAxis("Mouse Horizontal")) * rotationSpeed.x;
 			pitch -= (Input.GetAxis("MacRight Vertical") + Input.GetAxis("Mouse Vertical")) * rotationSpeed.y;
 		#endif
