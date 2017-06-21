@@ -12,7 +12,6 @@ public class Gravity : MonoBehaviour {
 
 	void Start() {
 		rigBody = GetComponent<Rigidbody>();
-		mass = mass < 0 ? -mass : mass;
 	}
 
 	void Update() {

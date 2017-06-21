@@ -16,13 +16,11 @@ public class ThirdPersonCamera : MonoBehaviour {
 	float collisionDistance;	// Distance collide if there's a wall
 	Vector3 vectorToCam;
 
-	[Range(0, 0.8f)]
 	public float moveSmoothTime = 0.06f; // Move smooth factor
 	Vector3 moveSmoothVelocity;	
 	Vector3 currentPosition;
 
 	public Vector2 rotationSpeed = new Vector2(10, 5); // Rotation max speed
-	[Range(0, 0.8f)]
 	public float rotateSmoothTime = 0.12f; // Rotation smooth factor
 	Vector3 rotateSmoothVelocity;
 	Vector3 currentRotation;
@@ -47,7 +45,8 @@ public class ThirdPersonCamera : MonoBehaviour {
 			RaycastHit hit;
 			Debug.DrawRay(target.position, vectorToCam.normalized * collisionDistance, Color.red);
 			if (Physics.Raycast(target.position, vectorToCam.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Terrain"))) {
-				collisionDistance = (hit.point - target.position).magnitude;
+				collisionDistance = (hit.point - target.position).magnitude - 0.5f;
+				collisionDistance = collisionDistance < 0 ? 0 : collisionDistance;
 			} else {
 				collisionDistance = distance;
 			}
@@ -82,7 +81,7 @@ public class ThirdPersonCameraEditor : Editor {
 	public override void OnInspectorGUI() {
 		ThirdPersonCamera script = (ThirdPersonCamera)target;
 		script.target = EditorGUILayout.ObjectField("Target", script.target, typeof(Transform), true) as Transform;
-		script.moveSmoothTime = EditorGUILayout.Slider("Move Smoothing", script.moveSmoothTime, 0, 0.8f);
+		script.moveSmoothTime = EditorGUILayout.Slider("Move Smoothing", script.moveSmoothTime, 0.001f, 0.1f);
 
 		EditorGUILayout.Space();
 		EditorGUILayout.LabelField("Zoom", EditorStyles.boldLabel);
