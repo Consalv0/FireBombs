@@ -11,11 +11,11 @@ public class ControllerMovement : MonoBehaviour {
 	public float speedSmoothing = 1.5f;	// Speed smoothing factor
 	public float maxSpeed = 10f; // Max speed
 	[SerializeField]
-	float curretVelocity;
+	float curretVelocity = 0.0001f;
 	float targetVelocity;
 	float speedSmoothVelocity;
 
-	[Range(0.05f, 1)]
+	[Range(0, 1)]
 	public float stabilizeSmoothing = 0.3f; // Stabilize smoothing factor
 	public Vector3 rotationSmoothing = new Vector3(0.5f, 0.3f, -20f); // Vector3 smoothing factor
 	Vector3 rotationSmoothVelocity;
@@ -60,10 +60,10 @@ public class ControllerMovement : MonoBehaviour {
 			rigBody.AddRelativeTorque(new Vector3(targetRotation.x, 0, 0));
 
 			/* << Code Copied from http://answers.unity3d.com/questions/10425 >> */
-			Vector3 predictedUp = Quaternion.AngleAxis(rigBody.angularVelocity.magnitude * Mathf.Rad2Deg * stabilizeSmoothing / 1.5f,
+			Vector3 predictedUp = Quaternion.AngleAxis(rigBody.angularVelocity.magnitude * Mathf.Rad2Deg * stabilizeSmoothing / curretVelocity,
 			                                           rigBody.angularVelocity) * transform.up;
 			Vector3 torqueVector = Vector3.Cross(predictedUp, Vector3.up);
-			rigBody.AddTorque(torqueVector * 1.5f * 1.5f);
+			rigBody.AddTorque(torqueVector * curretVelocity);
 			/* /<< >>/ */
 
 			//// Kinematic Rotation ////
@@ -80,7 +80,7 @@ public class ControllerMovement : MonoBehaviour {
 			curretVelocity = Mathf.SmoothDamp(curretVelocity, targetVelocity, ref speedSmoothVelocity, speedSmoothing);
 			rigBody.velocity = transform.forward * curretVelocity;
 		} else {
-			curretVelocity = rigBody.velocity.magnitude;
+			curretVelocity = rigBody.velocity.magnitude.Equals(0) ? 0.0001f : rigBody.velocity.magnitude;
 		}
 
 		//// Kinematic Movement ////
