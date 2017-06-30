@@ -12,14 +12,8 @@ public class Entity : EntityTypes {
 	public int level = 1;
   public Material material;
 
-  public Vector2 metaPos;
-	public Vector3 wallSize;
 	public bool isActive;
-	public Vector3 onPosition;
-	public Vector3 offPosition;
-	Vector3 currentPosition;
 	public float smoothVelPosition;
-  public Vector2 mazeSize;
 
   bool flick = true;
 	Material defaultMaterial;
@@ -40,14 +34,6 @@ public class Entity : EntityTypes {
 					material.renderQueue = 3000;
 				}
 				break;
-
-      case EntityType.SpawnMaze:
-        gameObject.AddComponent<MazeIntelli>();
-				break;
-			case EntityType.MazeWall:
-				onPosition = transform.position + new Vector3(0, wallSize.y, 0);
-				offPosition = transform.position;
-				break;
 		}
 		defaultMaterial = GetComponentInChildren<Renderer>().materials[0];
   }
@@ -62,13 +48,6 @@ public class Entity : EntityTypes {
         if (color.a > 0.05f)
           material.color = new Color(color.r, color.g, color.b, color.a - 0.4f / health);
         break;
-			case EntityType.MazeWall:
-				if (isActive) {
-					transform.position = Vector3.SmoothDamp(transform.position, onPosition, ref currentPosition, smoothVelPosition, 5);
-				} else {
-					transform.position = Vector3.SmoothDamp(transform.position, offPosition, ref currentPosition, smoothVelPosition, 5);
-				}
-				break;
       default:
         if (isAlive) {
           if (health < 0) {
@@ -119,18 +98,6 @@ public class EntityEditor : Editor {
       case EntityType.Shatter:
 				script.health = EditorGUILayout.Slider("Life Time", script.health, 0f, 100f * script.level);
         script.level = EditorGUILayout.IntSlider("Level", script.level, 1, 100);
-        break;
-
-      case EntityType.MazeWall:
-        script.metaPos = EditorGUILayout.Vector2Field("Array Position", script.metaPos);
-				script.isActive = EditorGUILayout.Toggle("Is Active", script.isActive);
-				script.smoothVelPosition = EditorGUILayout.Slider("State Velocity", script.smoothVelPosition, 0.001f, 100f);
-        break;
-
-      case EntityType.SpawnMaze:
-        if (script.gameObject.GetComponent<MazeIntelli>() == null)
-          script.gameObject.AddComponent<MazeIntelli>();
-        script.mazeSize = EditorGUILayout.Vector2Field("Maze Size", script.mazeSize);
         break;
 
 			case EntityType.SpawnBase:

@@ -8,8 +8,6 @@
   Bomb,
 	ElectricBomb, 
 	Crab,
-  MazeWall,
-  SpawnMaze,
   SpawnBase,
 };
 
