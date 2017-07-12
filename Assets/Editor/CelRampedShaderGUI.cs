@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEditor.UI;
 using UnityEngine.UI;
 
+[CanEditMultipleObjects]
 public class CelRampedShaderGUI : ShaderGUI {
 	public enum BlendMode {
 		Opaque,
@@ -25,6 +26,7 @@ public class CelRampedShaderGUI : ShaderGUI {
 
 	MaterialProperty textureMap;
 	MaterialProperty textureRamp;
+	MaterialProperty noLightRamp;
 
 	//MaterialProperty outlineColor;
 	//MaterialProperty outlineWeight;
@@ -46,6 +48,7 @@ public class CelRampedShaderGUI : ShaderGUI {
 		shadowColor = FindProperty("_SColor", props);
 		roughness = FindProperty("_Roughness", props);
 		specular = FindProperty("_Specular", props);
+		noLightRamp = FindProperty("_LightRamp", props);
 
 		textureMap = FindProperty("_MainTex", props);
 		textureRamp = FindProperty("_Ramp", props);
@@ -65,6 +68,7 @@ public class CelRampedShaderGUI : ShaderGUI {
 
 	public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties) {
 		FindProperties(properties);
+		EditorGUI.BeginChangeCheck();
 
 		Material material = materialEditor.target as Material;
 		BlendMode render = (BlendMode)Enum.ToObject(typeof(BlendMode), Convert.ToInt32(modeBlend.floatValue));
@@ -84,14 +88,17 @@ public class CelRampedShaderGUI : ShaderGUI {
 		EditorGUI.indentLevel += 1;
 		if (render == BlendMode.Cutout)
 			cutoutAlpha.floatValue = EditorGUILayout.Slider("Cutout Alpha", cutoutAlpha.floatValue, 0, 1);
-		GUILayout.Space(20);
-		EditorGUILayout.LabelField("");
-		materialEditor.TextureScaleOffsetProperty(GUILayoutUtility.GetLastRect(), textureMap);
+		if (textureMap.textureValue != null) {
+			GUILayout.Space(20);
+			EditorGUILayout.LabelField("");
+			materialEditor.TextureScaleOffsetProperty(GUILayoutUtility.GetLastRect(), textureMap);
+		}
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel += -1;
 
 		EditorGUILayout.BeginHorizontal();
 		try {
+			if (!textureRamp.textureValue) throw new UnityException();
 			(textureRamp.textureValue as Texture2D).GetPixels();
 			EditorGUILayout.LabelField("", GUILayout.MinWidth(105));
 			materialEditor.TexturePropertyMiniThumbnail(GUILayoutUtility.GetLastRect(), textureRamp, "Light Ramp", "Albedo (RGB) and Transparency (A)");
@@ -112,14 +119,26 @@ public class CelRampedShaderGUI : ShaderGUI {
 			EditorGUILayout.LabelField("", GUILayout.MaxWidth(0));
 			materialEditor.TexturePropertyMiniThumbnail(GUILayoutUtility.GetLastRect(), textureRamp, "Light Ramp", "Albedo (RGB) and Transparency (A)");
 			GUILayout.FlexibleSpace();
-			EditorGUILayout.HelpBox("Preview not avialable, texture not readable.", MessageType.None);
+			EditorGUILayout.HelpBox("No Preview, texture not readable.", MessageType.None);
 		}
 		EditorGUIUtility.labelWidth = 0;
 		EditorGUILayout.EndHorizontal();
 		EditorGUI.indentLevel += 1;
+		if (textureRamp.textureValue) {
+			noLightRamp.floatValue = 0;
+			material.EnableKeyword("LIGHTRAMP_ON");
+			material.DisableKeyword("LIGHTRAMP_OFF");
+		} else {
+			noLightRamp.floatValue = 1;
+			material.EnableKeyword("LIGHTRAMP_OFF");
+			material.DisableKeyword("LIGHTRAMP_ON");
+		}
+		// noLightRamp.floatValue = EditorGUILayout.Toggle(noLightRamp.floatValue.Equals(0), GUILayout.MinWidth(60)) ? 1 : 0;
 		EditorGUILayout.Space();
-		rampSaturation.floatValue = EditorGUILayout.Slider("Gray Scale", rampSaturation.floatValue, 0, 1);
-		EditorGUILayout.Space();
+		if (textureRamp.textureValue != null) {
+			rampSaturation.floatValue = EditorGUILayout.Slider("Gray Scale", rampSaturation.floatValue, 0, 1);
+			EditorGUILayout.Space();
+		}
 		EditorGUILayout.BeginHorizontal();
 			EditorGUIUtility.labelWidth = 75;
 			shadowColor.colorValue = ColorLuminance(EditorGUILayout.ColorField("Shadow", shadowColor.colorValue));
@@ -128,15 +147,17 @@ public class CelRampedShaderGUI : ShaderGUI {
 		EditorGUILayout.EndHorizontal();
 		roughness.floatValue = EditorGUILayout.Slider("Roughness", roughness.floatValue, 0, 1);
 		specular.floatValue = EditorGUILayout.Slider("Specular", specular.floatValue, 0, 1);
-		GUILayout.Space(20);
-		EditorGUILayout.LabelField("");
-		materialEditor.TextureScaleOffsetProperty(GUILayoutUtility.GetLastRect(), textureRamp);
-		EditorGUI.indentLevel += -1;
+		// if (textureRamp.textureValue != null) {
+		// 	GUILayout.Space(20);
+		// 	EditorGUILayout.LabelField("");
+		// 	materialEditor.TextureScaleOffsetProperty(GUILayoutUtility.GetLastRect(), textureRamp);
+		// }
 		EditorGUILayout.Space();
+		EditorGUI.indentLevel += -1;
 
 		modeBlend.floatValue = render.GetHashCode();
-		SetupMaterialWithBlendMode(material, render);
-			
+		SetMaterialBlendMode(material, render);
+
 		base.OnGUI(materialEditor, properties);
 	}
 
@@ -174,7 +195,7 @@ public class CelRampedShaderGUI : ShaderGUI {
 		return color;
 	}
 
-	public static void SetupMaterialWithBlendMode(Material material, BlendMode blendMode) {
+	public static void SetMaterialBlendMode(Material material, BlendMode blendMode) {
 		switch (blendMode) {
 			case BlendMode.Opaque:
 				material.SetOverrideTag("RenderType", "Opaque");
